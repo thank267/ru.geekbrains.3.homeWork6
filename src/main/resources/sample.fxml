@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="center" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.gb.chat.client.Controller">
+
+    <HBox fx:id="authPanel" spacing="5.0">
+        <VBox>
+            <HBox>
+                <Text text="Войти">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Text>
+            </HBox>
+            <HBox spacing="5.0">
+                <TextField fx:id="loginField" promptText="Логин" HBox.hgrow="ALWAYS" />
+                <PasswordField fx:id="passField" onAction="#sendAuth" promptText="Пароль" HBox.hgrow="ALWAYS" />
+                <Button onAction="#sendAuth" text="Send" HBox.hgrow="ALWAYS" />
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            </HBox>
+        </VBox>
+    </HBox>
+    <VBox fx:id="registerPanel" spacing="5.0">
+        <Text text="Зарегетрироваться">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Text>
+        <TextField fx:id="loginRegister" maxWidth="200" minWidth="200" promptText="Логин" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="nickRegister" maxWidth="200" minWidth="200" promptText="Никнейм" HBox.hgrow="ALWAYS" />
+        <PasswordField fx:id="passRegister" maxWidth="200" minWidth="200" promptText="Пароль" HBox.hgrow="ALWAYS" />
+        <Button onAction="#sendRegister" text="Send" HBox.hgrow="ALWAYS" />
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </padding>
+    </VBox>
+
+    <HBox fx:id="centralPanel" VBox.vgrow="ALWAYS">
+        <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />
+        <ListView fx:id="clientsList" maxWidth="200" minWidth="200" />
+    </HBox>
+
+    <HBox fx:id="msgPanel" spacing="5.0">
+        <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите сообщение..." HBox.hgrow="ALWAYS" />
+        <Button fx:id="send" onAction="#sendMsg" text="Send" />
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </padding>
+    </HBox>
+
+</VBox>
