@@ -117,6 +117,12 @@ public class Controller implements Initializable {
 
     }
 
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+
+
     public void setCallbacks() {
         NetworkService.setCallOnException(args ->
                 Platform.runLater(() -> {

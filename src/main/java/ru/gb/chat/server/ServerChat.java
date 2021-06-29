@@ -1,5 +1,7 @@
 package ru.gb.chat.server;
 
+import lombok.extern.log4j.Log4j;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +10,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Created by Artem Kropotov on 17.05.2021
  */
+
+@Log4j
 public class ServerChat {
     private final CopyOnWriteArrayList<ClientHandler> clients = new CopyOnWriteArrayList<>();
 
@@ -17,16 +21,16 @@ public class ServerChat {
 
     public void start() {
         try(ServerSocket serverSocket = new ServerSocket(8189)) {
-            System.out.println("Сервер запущен");
+            log.info("Сервер запущен");
             while (true) {
                 Socket socket = serverSocket.accept();
-                System.out.println("Клиент подключился");
+                log.info("Клиент подключился");
                 new ClientHandler(socket, this);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage(),e);
         }
-        System.out.println();
+
     }
 
     public void broadcastMsg(String msg) {

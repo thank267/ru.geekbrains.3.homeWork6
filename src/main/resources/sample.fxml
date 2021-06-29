@@ -19,7 +19,7 @@
             <HBox spacing="5.0">
                 <TextField fx:id="loginField" promptText="Логин" HBox.hgrow="ALWAYS" />
                 <PasswordField fx:id="passField" onAction="#sendAuth" promptText="Пароль" HBox.hgrow="ALWAYS" />
-                <Button onAction="#sendAuth" text="Send" HBox.hgrow="ALWAYS" />
+                <Button fx:id="sendAuth" onAction="#sendAuth" text="Send" HBox.hgrow="ALWAYS" />
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
