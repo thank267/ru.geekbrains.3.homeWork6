@@ -1,5 +1,7 @@
 package ru.gb.chat.server;
 
+import lombok.extern.log4j.Log4j;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.Arrays;
 /**
  * Created by Artem Kropotov on 17.05.2021
  */
+@Log4j
 public class ClientHandler {
 
     private Socket socket;
@@ -31,6 +34,7 @@ public class ClientHandler {
                         String msg = in.readUTF();
                         // /auth login password
                         if (msg.startsWith("/auth ")) {
+                            log.info("Клиент прислал команду: "+msg);
                             String[] token = msg.split("\\s");
                             User user = authService.findByLoginAndPassword(token[1], token[2]);
                             if (user != null && !serverChat.isNickBusy(user.getNickname())) {
@@ -43,6 +47,7 @@ public class ClientHandler {
                             }
                             // /register login nickname password
                         } else if (msg.startsWith("/register ")) {
+                            log.info("Клиент прислал команду: "+msg);
                             String[] token = msg.split("\\s");
                             User user = authService.findByLoginOrNick(token[1], token[2]);
                             if (user == null) {
@@ -60,6 +65,7 @@ public class ClientHandler {
                         String msg = in.readUTF();
                         if (msg.startsWith("/")) {
                             if (msg.equals("/end")) {
+                                log.info("Клиент прислал команду: "+msg);
                                 sendMessage("/end");
                                 break;
                             }
@@ -70,32 +76,34 @@ public class ClientHandler {
 
                             }
                             if (msg.startsWith("/update")) {
+                                log.info("Клиент прислал команду: "+msg);
                                 String[] token = msg.split("\\s", 2);
-                                System.out.println(token[1]);
                                 serverChat.unsubscribe(this);
                                 this.user= authService.updateNickByUser(this.getUser(),token[1]);
                                 serverChat.subscribe(this);
 
                             }
                             if (msg.equals("/del")) {
+                                log.info("Клиент прислал команду: "+msg);
                                 authService.remove(user);
                                 sendMessage("/end");
                                 break;
                             }
                         } else {
+                            log.info("Клиент " + user.getNickname() +" прислал сообщение: "+msg);
                             serverChat.broadcastMsg(user.getNickname() + ": " + msg);
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(e.getLocalizedMessage(),e);
                 } finally {
-                    System.out.println("Клиент отключился");
+                    log.info("Клиент отключился");
                     disconnect();
                 }
             }).start();
         } catch (IOException e) {
             disconnect();
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage(),e);
         }
     }
 
@@ -103,7 +111,7 @@ public class ClientHandler {
         try {
             out.writeUTF(message);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage(),e);
         }
     }
 
@@ -112,17 +120,17 @@ public class ClientHandler {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage(),e);
         }
         try {
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage(),e);
         }
         try {
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage(),e);
         }
     }
 
